@@ -25,21 +25,35 @@ SAMPLES = DF_SAMPLE["sample_name"]
 SAMPLES_PE = SAMPLES[DF_SAMPLE["library_layout"] == "paired-end"]
 SAMPLES_SE = SAMPLES[DF_SAMPLE["library_layout"] == "single-end"]
 
+SUFFIXES_SRA_PE = ["_1.fastq.gz", "_2.fastq.gz"]
+SUFFIX_SRA_SE = ".fastq.gz"
+
 
 # *--------------------------------------------------------------------------* #
 # * Define results to be retrieved                                           * #
 # *--------------------------------------------------------------------------* #
+targets = [
+    f"{sample}/{sample}{suffix}"
+    for sample in SAMPLES_PE
+    for suffix in SUFFIXES_SRA_PE
+] + [f"{sample}/{sample}{SUFFIX_SRA_SE}" for sample in SAMPLES_SE]
+
+
+if config["run_fastqc"]:
+    targets += [f"fastqc/{sample}" for sample in SAMPLES]
+
+
+if config["run_multiqc"]:
+    targets += ["multiqc/multiqc_report.html"]
+
+
 rule all:
     input:
-        fqs_pe=expand(
-            "{sample}/{sample}{suffix}",
-            sample=SAMPLES_PE,
-            suffix=["_1.fastq.gz", "_2.fastq.gz"],
-        ),
-        fqs_se=expand("{sample}/{sample}.fastq.gz", sample=SAMPLES_SE),
-        qcs=expand("fastqc/{sample}", sample=SAMPLES),
-        multiqc="multiqc/multiqc_report.html",
+        targets,
 
 
+# *--------------------------------------------------------------------------* #
+# * Include rules                                                            * #
+# *--------------------------------------------------------------------------* #
 include: "rules/sra.smk"
 include: "rules/qc.smk"
