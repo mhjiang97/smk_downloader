@@ -1,19 +1,20 @@
-def get_fastq_files(wildcards):
+def get_fastqc_inputs(wildcards):
     sample = wildcards.sample
+
     if sample in SAMPLES_PE:
         return {
-            "fq_1": f"{sample}/{sample}_1.fastq.gz",
-            "fq_2": f"{sample}/{sample}_2.fastq.gz",
+            "fq_1": "{sample}/{sample}_1.fastq.gz",
+            "fq_2": "{sample}/{sample}_2.fastq.gz",
         }
     elif sample in SAMPLES_SE:
-        return {"fq": f"{sample}/{sample}.fastq.gz"}
+        return {"fq": "{sample}/{sample}.fastq.gz"}
     else:
         raise ValueError(f"Sample {sample} not found in SAMPLES_PE or SAMPLES_SE.")
 
 
 rule fastqc:
     input:
-        unpack(get_fastq_files),
+        unpack(get_fastqc_inputs),
     output:
         dir=directory("fastqc/{sample}"),
     threads: 1
