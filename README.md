@@ -9,22 +9,21 @@
 ## Recommended Project Structure
 
 ```
-project/
-├── data/
-│   └── sra/
-│       └── PRJNA*/            # Data organized by BioProject
-│           ├── SRR*/          # Individual SRA entries
-│           │   ├── SRR*.sra           # Raw SRA files
-│           │   ├── SRR*.fastq.gz      # Single-end FASTQ
-|           │   ├── SRR*_1.fastq.gz    # Paired-end forward reads
-│           │   └── SRR*_2.fastq.gz    # Paired-end reverse reads
-│           ├── SRR*.fq.gz             # Symbolic links (single-end)
-|           ├── SRR*_R1.fq.gz          # Symbolic links (paired forward)
-│           ├── SRR*_R2.fq.gz          # Symbolic links (paired reverse)
-│           ├── fastqc/                # FastQC output
-│           └── multiqc/               # MultiQC reports
+data/
+├── sra/
+│   └── PRJNA*/            # Data organized by BioProject
+│       ├── SRR*/          # Individual SRA entries
+│       │   ├── SRR*.sra           # Raw SRA files
+│       │   ├── SRR*.fastq.gz      # Single-end FASTQ
+|       │   ├── SRR*_1.fastq.gz    # Paired-end forward reads
+│       │   └── SRR*_2.fastq.gz    # Paired-end reverse reads
+│       ├── SRR*.fq.gz             # Symbolic links (single-end)
+|       ├── SRR*_R1.fq.gz          # Symbolic links (paired forward)
+│       ├── SRR*_R2.fq.gz          # Symbolic links (paired reverse)
+│       ├── fastqc/                # FastQC output
+│       └── multiqc/               # MultiQC reports
 └── code/
-    └── smk_downloader/        # This workflow
+    └── smk_downloader/    # This workflow
 ```
 
 ## License
