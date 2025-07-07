@@ -1,0 +1,45 @@
+# *--------------------------------------------------------------------------* #
+# * Configuration                                                            * #
+# *--------------------------------------------------------------------------* #
+configfile: "config/config.yaml"
+
+
+pepfile: "config/pep/config.yaml"
+
+
+wildcard_constraints:
+    sample=r"\w+",  # r"(?!.*_R[12])\w+",
+
+
+if config["dir_run"] and config["dir_run"] is not None:
+
+    workdir: config["dir_run"]
+
+
+SUFFIXES = config["suffix_fastq_renamed"]
+SUFFIX_READ_1, SUFFIX_READ_2 = SUFFIXES["paired-end"]
+SUFFIX_READ_SE = SUFFIXES["single-end"]
+
+DF_SAMPLE = pep.sample_table
+SAMPLES = DF_SAMPLE["sample_name"]
+SAMPLES_PE = SAMPLES[DF_SAMPLE["library_layout"] == "paired-end"]
+SAMPLES_SE = SAMPLES[DF_SAMPLE["library_layout"] == "single-end"]
+
+
+# *--------------------------------------------------------------------------* #
+# * Define results to be retrieved                                           * #
+# *--------------------------------------------------------------------------* #
+rule all:
+    input:
+        fqs_pe=expand(
+            "{sample}/{sample}{suffix}",
+            sample=SAMPLES_PE,
+            suffix=["_1.fastq.gz", "_2.fastq.gz"],
+        ),
+        fqs_se=expand("{sample}/{sample}.fastq.gz", sample=SAMPLES_SE),
+        qcs=expand("fastqc/{sample}", sample=SAMPLES),
+        multiqc="multiqc/multiqc_report.html",
+
+
+include: "rules/sra.smk"
+include: "rules/qc.smk"

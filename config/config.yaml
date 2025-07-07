@@ -1,0 +1,7 @@
+dir_run: /home/mjhk/projects/data/sra/PRJNA871228
+retries_sra: 1
+suffix_fastq_renamed:
+  paired-end:
+    - "_R1.fq.gz"
+    - "_R2.fq.gz"
+  single-end: ".fq.gz"

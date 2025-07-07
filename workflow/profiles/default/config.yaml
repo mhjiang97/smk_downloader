@@ -1,0 +1,16 @@
+printshellcmds: True
+keep-incomplete: True
+cores: 20
+resources:
+  n_instance: 5
+set-threads:
+  fastqc: 4
+set-resources:
+  download_sra_paired_end:
+    n_instance: 1
+  download_sra_single_end:
+    n_instance: 1
+# apptainer-args: "--bind /storage5,/storage2,/home/mjhk"
+# software-deployment-method:
+#   - apptainer
+#   - conda
