@@ -10,7 +10,3 @@ set-resources:
     n_instance: 1
   download_sra_single_end:
     n_instance: 1
-# apptainer-args: "--bind /storage5,/storage2,/home/mjhk"
-# software-deployment-method:
-#   - apptainer
-#   - conda
