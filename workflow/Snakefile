@@ -1,20 +1,28 @@
 # *--------------------------------------------------------------------------* #
 # * Configuration                                                            * #
 # *--------------------------------------------------------------------------* #
+from snakemake.utils import validate
+
+
 configfile: "config/config.yaml"
 
 
 pepfile: "config/pep/config.yaml"
 
 
+pepschema: "../config/schemas/pep.yaml"
+
+
 wildcard_constraints:
-    sample=r"\w+",  # r"(?!.*_R[12])\w+",
+    sample=r"\w+",
 
 
 if config["dir_run"] and config["dir_run"] is not None:
 
     workdir: config["dir_run"]
 
+
+validate(config, "../config/schemas/config.yaml")
 
 SUFFIXES = config["suffix_fastq_renamed"]
 SUFFIX_READ_1, SUFFIX_READ_2 = SUFFIXES["paired-end"]
@@ -33,9 +41,7 @@ SUFFIX_SRA_SE = ".fastq.gz"
 # * Define results to be retrieved                                           * #
 # *--------------------------------------------------------------------------* #
 targets = [
-    f"{sample}/{sample}{suffix}"
-    for sample in SAMPLES_PE
-    for suffix in SUFFIXES_SRA_PE
+    f"{sample}/{sample}{suffix}" for sample in SAMPLES_PE for suffix in SUFFIXES_SRA_PE
 ] + [f"{sample}/{sample}{SUFFIX_SRA_SE}" for sample in SAMPLES_SE]
 
 
