@@ -34,6 +34,7 @@ SAMPLES_PE = SAMPLES[DF_SAMPLE["library_layout"] == "paired-end"]
 SAMPLES_SE = SAMPLES[DF_SAMPLE["library_layout"] == "single-end"]
 
 SUFFIXES_SRA_PE = ["_1.fastq.gz", "_2.fastq.gz"]
+SUFFIXES_SRA_1, SUFFIXES_SRA_2 = SUFFIXES_SRA_PE
 SUFFIX_SRA_SE = ".fastq.gz"
 
 

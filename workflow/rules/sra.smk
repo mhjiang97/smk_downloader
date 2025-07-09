@@ -3,10 +3,10 @@ rule download_sra_paired_end:
     retries: config["retries_sra"]
     output:
         sra=protected(update("{sample}/{sample}.sra")),
-        fq_1=protected(update("{sample}/{sample}_1.fastq.gz")),
-        fq_2=protected(update("{sample}/{sample}_2.fastq.gz")),
-        fq_1_renamed="{sample}%s" % SUFFIX_READ_1,
-        fq_2_renamed="{sample}%s" % SUFFIX_READ_2,
+        fq_1=protected(update(f"{{sample}}/{{sample}}{SUFFIXES_SRA_1}")),
+        fq_2=protected(update(f"{{sample}}/{{sample}}{SUFFIXES_SRA_2}")),
+        fq_1_renamed=f"{{sample}}{SUFFIX_READ_1}",
+        fq_2_renamed=f"{{sample}}{SUFFIX_READ_2}",
     log:
         "logs/{sample}/download_sra_paired_end.log",
     script:
@@ -18,8 +18,8 @@ rule download_sra_single_end:
     retries: config["retries_sra"]
     output:
         sra=protected(update("{sample}/{sample}.sra")),
-        fq=protected(update("{sample}/{sample}.fastq.gz")),
-        fq_renamed="{sample}%s" % SUFFIX_READ_SE,
+        fq=protected(update(f"{{sample}}/{{sample}}{SUFFIX_SRA_SE}")),
+        fq_renamed=f"{{sample}}{SUFFIX_READ_SE}",
     log:
         "logs/{sample}/download_sra_single_end.log",
     script:
