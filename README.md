@@ -33,8 +33,8 @@ git clone https://github.com/mhjiang97/smk_downloader.git
 
 cd smk_downloader/
 
-mv config/.config.yaml config/config.yaml
-mv config/pep/.config.yaml config/pep/config.yaml
+cp config/.config.yaml config/config.yaml
+cp config/pep/.config.yaml config/pep/config.yaml
 ```
 
 ## Configuration
