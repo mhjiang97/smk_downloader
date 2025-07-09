@@ -45,7 +45,7 @@ The main configuration file (`config/config.yaml`) contains:
 
 - `retries_sra`: Number of retries for SRA downloads (default: `1`)
 - `dir_run`: Output directory (optional)
-- `suffix_fastq_renamed`: Read file naming patterns
+- `suffixes_fastq_renamed`: Read file naming patterns
   - `paired-end`: (Default: `["_R1.fq.gz", "_R2.fq.gz"]`)
   - `single-end`: (Default: `".fq.gz"`)
 - `run_fastqc`: Enable FastQC analysis (default: `true`)

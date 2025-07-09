@@ -6,7 +6,7 @@ properties:
   retries_sra:
     type: integer
     default: 1
-  suffix_fastq_renamed:
+  suffixes_fastq_renamed:
     type: object
     properties:
       paired-end:
@@ -34,6 +34,6 @@ additionalProperties: false
 
 required:
   - retries_sra
-  - suffix_fastq_renamed
+  - suffixes_fastq_renamed
   - run_fastqc
   - run_multiqc
