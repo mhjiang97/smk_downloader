@@ -10,7 +10,7 @@ configfile: "config/config.yaml"
 pepfile: "config/pep/config.yaml"
 
 
-pepschema: "../config/schemas/pep.yaml"
+pepschema: "schemas/pep.schema.yaml"
 
 
 wildcard_constraints:
@@ -22,7 +22,7 @@ if config["dir_run"] and config["dir_run"] is not None:
     workdir: config["dir_run"]
 
 
-validate(config, "../config/schemas/config.yaml")
+validate(config, "schemas/config.schema.yaml")
 
 SUFFIXES = config["suffixes_fastq_renamed"]
 SUFFIX_READ_1, SUFFIX_READ_2 = SUFFIXES["paired-end"]
