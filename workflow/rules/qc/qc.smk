@@ -1,30 +1,22 @@
-def get_fastqc_inputs(wildcards):
-    sample = wildcards.sample
-
-    if sample in SAMPLES_PE:
-        return {
-            "fq_1": "{sample}/{sample}_1.fastq.gz",
-            "fq_2": "{sample}/{sample}_2.fastq.gz",
-        }
-    elif sample in SAMPLES_SE:
-        return {"fq": "{sample}/{sample}.fastq.gz"}
-    else:
-        raise ValueError(f"Sample {sample} not found in SAMPLES_PE or SAMPLES_SE.")
-
-
 rule fastqc:
+    conda:
+        "../../envs/fastqc.yaml"
     input:
         unpack(get_fastqc_inputs),
     output:
         dir=directory("fastqc/{sample}"),
+    params:
+        layout=get_library_layout,
     threads: 1
     log:
         "logs/{sample}/fastqc.log",
     script:
-        "../scripts/fastqc.sh"
+        "../../scripts/fastqc.sh"
 
 
 rule multiqc:
+    conda:
+        "../../envs/multiqc.yaml"
     input:
         fastqcs=expand("fastqc/{sample}", sample=SAMPLES),
     output:

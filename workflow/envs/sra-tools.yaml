@@ -1,0 +1,4 @@
+channels:
+  - bioconda
+dependencies:
+  - sra-tools=3.2.1

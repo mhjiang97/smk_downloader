@@ -1,66 +1,10 @@
-# *--------------------------------------------------------------------------* #
-# * Configuration                                                            * #
-# *--------------------------------------------------------------------------* #
-from snakemake.utils import validate
-
-
-configfile: "config/config.yaml"
-
-
-pepfile: "config/pep/config.yaml"
-
-
-pepschema: "schemas/pep.schema.yaml"
-
-
-wildcard_constraints:
-    sample=r"\w+",
-
-
-if config["dir_run"] and config["dir_run"] is not None:
-
-    workdir: config["dir_run"]
-
-
-validate(config, "schemas/config.schema.yaml")
-
-SUFFIXES = config["suffixes_fastq_renamed"]
-SUFFIX_READ_1, SUFFIX_READ_2 = SUFFIXES["paired-end"]
-SUFFIX_READ_SE = SUFFIXES["single-end"]
-
-DF_SAMPLE = pep.sample_table
-SAMPLES = DF_SAMPLE["sample_name"]
-SAMPLES_PE = SAMPLES[DF_SAMPLE["library_layout"] == "paired-end"]
-SAMPLES_SE = SAMPLES[DF_SAMPLE["library_layout"] == "single-end"]
-
-SUFFIXES_SRA_PE = ["_1.fastq.gz", "_2.fastq.gz"]
-SUFFIXES_SRA_1, SUFFIXES_SRA_2 = SUFFIXES_SRA_PE
-SUFFIX_SRA_SE = ".fastq.gz"
-
-
-# *--------------------------------------------------------------------------* #
-# * Define results to be retrieved                                           * #
-# *--------------------------------------------------------------------------* #
-targets = [
-    f"{sample}/{sample}{suffix}" for sample in SAMPLES_PE for suffix in SUFFIXES_SRA_PE
-] + [f"{sample}/{sample}{SUFFIX_SRA_SE}" for sample in SAMPLES_SE]
-
-
-if config["run_fastqc"]:
-    targets += [f"fastqc/{sample}" for sample in SAMPLES]
-
-
-if config["run_multiqc"]:
-    targets += ["multiqc/multiqc_report.html"]
+include: "rules/common.smk"
 
 
 rule all:
     input:
-        targets,
+        get_targets(),
 
 
-# *--------------------------------------------------------------------------* #
-# * Include rules                                                            * #
-# *--------------------------------------------------------------------------* #
-include: "rules/sra.smk"
-include: "rules/qc.smk"
+include: "rules/sra/sra.smk"
+include: "rules/qc/qc.smk"

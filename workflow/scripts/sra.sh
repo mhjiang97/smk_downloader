@@ -5,16 +5,14 @@ set -x
 
 
 { sample=${snakemake_wildcards[sample]}
-n_output=${#snakemake_output[@]}
+layout=${snakemake_params[layout]}
 
-if [ "${n_output}" -eq 10 ]; then
-    pe=true
+if [ "${layout}" == "paired-end" ]; then
     fq_1=${snakemake_output[fq_1]}
     fq_2=${snakemake_output[fq_2]}
     fq_1_renamed=${snakemake_output[fq_1_renamed]}
     fq_2_renamed=${snakemake_output[fq_2_renamed]}
-elif [ "${n_output}" -eq 6 ]; then
-    pe=false
+elif [ "${layout}" == "single-end" ]; then
     fq=${snakemake_output[fq]}
     fq_renamed=${snakemake_output[fq_renamed]}
 else
@@ -22,10 +20,10 @@ else
     exit 1
 fi
 
-if [ ${pe} == true ] && [ -s "${fq_1}" ] && [ -s "${fq_2}" ] && [ -h "${fq_1_renamed}" ] && [ -h "${fq_2_renamed}" ]; then
+if [ "${layout}" == "paired-end" ] && [ -s "${fq_1}" ] && [ -s "${fq_2}" ] && [ -h "${fq_1_renamed}" ] && [ -h "${fq_2_renamed}" ]; then
     echo "$(date +"%Y-%m-%d %H:%M:%S") [INFO] ${sample} already exists."
     exit 0
-elif [ ${pe} == false ] && [ -s "${fq}" ] && [ -h "${fq_renamed}" ]; then
+elif [ "${layout}" == "single-end" ] && [ -s "${fq}" ] && [ -h "${fq_renamed}" ]; then
     echo "$(date +"%Y-%m-%d %H:%M:%S") [INFO] ${sample} already exists."
     exit 0
 fi
@@ -34,7 +32,7 @@ prefetch -p -r yes -C yes -O ./ --max-size u "${sample}"
 
 fasterq-dump ./"${sample}"
 
-if [ ${pe} == true ]; then
+if [ "${layout}" == "paired-end" ]; then
     pigz "${sample}"_1.fastq "${sample}"_2.fastq
 
     mv "${sample}"_1.fastq.gz "${sample}"/
