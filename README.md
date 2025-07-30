@@ -1,6 +1,6 @@
 # SMK_DOWNLOADER
 
-*A Snakemake workflow for downloading public raw sequencing data*
+A Snakemake workflow for downloading public raw sequencing data
 
 ## Supported Data Sources
 
@@ -8,7 +8,7 @@
 
 ## Recommended Project Structure
 
-```
+```text
 data/
 ├── sra/
 │   └── PRJNA*/            # Data organized by BioProject
@@ -56,6 +56,7 @@ All default values are defined in the validation schema (`config/schemas/config.
 ### Profile
 
 The default profile (`workflow/profiles/default/config.yaml`) configures execution parameters:
+
 - `printshellcmds`:  True
 - `keep-incomplete`: True
 - `cores`: 20
