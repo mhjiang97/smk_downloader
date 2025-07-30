@@ -1,7 +1,10 @@
+software-deployment-method:
+  - conda
+conda-prefix: /home/mjhk/.snakemake/envs/smk_downloader
 printshellcmds: True
 keep-incomplete: True
 cores: 20
-resources:
+resources:a
   n_instance: 5
 set-threads:
   fastqc: 4
