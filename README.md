@@ -175,16 +175,13 @@ All downloaded data is organized in the directory specified as *dir_run* in your
 - **multiqc/**
   - Summary: `multiqc_report.html`
 
-- **SRRxxx/**
-  - Raw SRA archive files: `SRRxxx.sra`
-  - Extracted single-end reads: `SRRxxx.fastq.gz` *or*
-  - Extracted paired-end reads: `SRRxxx_1.fastq.gz`, `SRRxxx_2.fastq.gz`
+- **{sample}/**
+  - Raw SRA archive files: `{sample}.sra`
+  - Extracted single-end reads: `{sample}.fastq.gz` *or*
+  - Extracted paired-end reads: `{sample}_1.fastq.gz`, `{sample}_2.fastq.gz`
 
-- **SRRxxx.fq.gz**
-  - Symbolic links to single-end reads
-
-- **SRRxxx_R1.fq.gz**, **SRRxxx_R2.fq.gz**
-  - Symbolic links to paired-end reads
+- **{sample}.fq.gz** *or* **{sample}_R1.fq.gz**, **{sample}_R2.fq.gz**
+  - Symbolic links to single-end reads *or* paired-end reads
 
 </details>
 
