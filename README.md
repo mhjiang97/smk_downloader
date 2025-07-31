@@ -16,22 +16,10 @@ A Snakemake workflow for downloading public raw sequencing data
 
 ```text
 data/
-├── sra/
-│   └── PRJNA*/            # Data organized by BioProject
-│       ├── fastqc/            # QC reports
-│       ├── multiqc/           # Aggregated QC reports
-│       ├── SRRxxx/
-│       │   ├── SRRxxx.sra
-│       │   └── SRRxxx.fastq.gz    # Single-end reads
-│       ├── SRRxxx/            # Individual SRA entries
-│       │   ├── SRRxxx.sra         # Raw SRA files
-│       │   ├── SRRxxx_1.fastq.gz  # Paired-end forward reads
-│       │   └── SRRxxx_2.fastq.gz  # Paired-end reverse reads
-│       ├── SRRxxx.fq.gz        # Symbolic links (single-end)
-│       ├── SRRxxx_R1.fq.gz     # Symbolic links (paired-end forward)
-│       └── SRRxxx_R2.fq.gz     # Symbolic links (paired-end reverse)
-└── code/
-    └── smk_downloader/    # This workflow
+├── code/
+│   └── smk_downloader/    # This workflow
+└── sra/
+    └── PRJNA*/            # Outputs of this workflow
 ```
 
 </details>
