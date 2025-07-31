@@ -48,6 +48,7 @@ cd smk_downloader/
 # Initialize configuration
 cp config/.config.yaml config/config.yaml
 cp config/pep/.config.yaml config/pep/config.yaml
+cp workflow/profiles/default/.config.yaml workflow/profiles/default/config.yaml
 ```
 
 ## Configuration
@@ -59,13 +60,18 @@ cp config/pep/.config.yaml config/pep/config.yaml
 <summary>Edit <code>config/config.yaml</code></summary>
 
 ```yaml
-retries_sra: 1
-dir_run: /home/user/projects/data
-suffixes_fastq_renamed:
-  paired-end: ["_R1.fq.gz", "_R2.fq.gz"]
-  single-end: [".fq.gz"]
-run_fastqc: true
-run_multiqc: true
+dir_run: /projects/data/sra/PRJNAxxx    # Path to the directory where data will be downloaded (Optional)
+
+retries_sra: 1                          # How many times to retry downloading SRA data (Default: 1)
+
+suffixes_fastq_renamed:                 # Suffixes for renamed FASTQ files (Defaults: {paired-end: ["_R1.fq.gz", "_R2.fq.gz"], single-end: ".fq.gz"})
+  paired-end:
+    - "_R1.fq.gz"
+    - "_R2.fq.gz"
+  single-end: ".fq.gz"
+
+run_fastqc: true                        # Whether to run FastQC on downloaded FASTQ files (Default: true)
+run_multiqc: true                       # Whether to run MultiQC on FastQC reports (Default: true)
 ```
 
 </details>
@@ -81,7 +87,7 @@ All default values are defined in the validation schema (`workflow/schemas/confi
 ```yaml
 software-deployment-method:
   - conda
-conda-prefix: /home/mjhk/.snakemake/envs/smk_downloader
+conda-prefix: /.snakemake/envs/smk_downloader
 printshellcmds: True
 keep-incomplete: True
 cores: 20
@@ -108,7 +114,7 @@ This workflow uses [**Portable Encapsulated Projects (PEP)**](https://pep.databi
 
 ```yaml
 pep_version: 2.1.0
-sample_table: samples.csv    # Path to the sample table (Required)
+sample_table: PRJNAxxx.csv    # Path to the sample table (Required)
 ```
 
 </details>

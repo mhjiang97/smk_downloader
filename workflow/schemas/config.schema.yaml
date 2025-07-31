@@ -31,9 +31,3 @@ properties:
     type: boolean
     default: true
 additionalProperties: false
-
-required:
-  - retries_sra
-  - suffixes_fastq_renamed
-  - run_fastqc
-  - run_multiqc

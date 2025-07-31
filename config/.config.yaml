@@ -1,4 +1,4 @@
-dir_run: /home/username/projects/data/sra/PRJNA871228
+dir_run: /projects/data/sra/PRJNAxxx
 
 retries_sra: 1
 
