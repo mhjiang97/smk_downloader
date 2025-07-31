@@ -165,8 +165,9 @@ All downloaded data is organized in the directory specified as *dir_run* in your
 
 - **{sample}/**
   - Raw SRA archive files: `{sample}.sra`
-  - Extracted single-end reads: `{sample}.fastq.gz` *or*
-  - Extracted paired-end reads: `{sample}_1.fastq.gz`, `{sample}_2.fastq.gz`
+
+- **{sample}.fastq.gz** *or* **{sample}_1.fastq.gz**, **{sample}_2.fastq.gz**
+  - Extracted single-end reads *or* paired-end reads
 
 - **{sample}.fq.gz** *or* **{sample}_R1.fq.gz**, **{sample}_R2.fq.gz**
   - Symbolic links to single-end reads *or* paired-end reads

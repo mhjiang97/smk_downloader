@@ -5,8 +5,8 @@ rule download_sra_paired_end:
     retries: config["retries_sra"]
     output:
         sra=protected(update("{sample}/{sample}.sra")),
-        fq_1=protected(update(f"{{sample}}/{{sample}}{SUFFIXES_SRA_1}")),
-        fq_2=protected(update(f"{{sample}}/{{sample}}{SUFFIXES_SRA_2}")),
+        fq_1=protected(update(f"{{sample}}{SUFFIXES_SRA_1}")),
+        fq_2=protected(update(f"{{sample}}{SUFFIXES_SRA_2}")),
         fq_1_renamed=f"{{sample}}{SUFFIX_READ_1}",
         fq_2_renamed=f"{{sample}}{SUFFIX_READ_2}",
     params:
@@ -26,7 +26,7 @@ rule download_sra_single_end:
     retries: config["retries_sra"]
     output:
         sra=protected(update("{sample}/{sample}.sra")),
-        fq=protected(update(f"{{sample}}/{{sample}}{SUFFIX_SRA_SE}")),
+        fq=protected(update(f"{{sample}}{SUFFIX_SRA_SE}")),
         fq_renamed=f"{{sample}}{SUFFIX_READ_SE}",
     params:
         layout=get_library_layout,

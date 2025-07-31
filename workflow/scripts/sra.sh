@@ -35,19 +35,14 @@ fasterq-dump ./"${sample}"
 if [ "${layout}" == "paired-end" ]; then
     pigz "${sample}"_1.fastq "${sample}"_2.fastq
 
-    mv "${sample}"_1.fastq.gz "${sample}"/
-    mv "${sample}"_2.fastq.gz "${sample}"/
-
     ln -s "${fq_1}" "${fq_1_renamed}"
     ln -s "${fq_2}" "${fq_2_renamed}"
 
     if [ -f "${sample}".fastq ]; then
         pigz "${sample}".fastq
-        mv "${sample}".fastq.gz "${sample}"/
     fi
 else
     pigz "${sample}".fastq
-    mv "${sample}".fastq.gz "${sample}"/
     ln -s "${fq}" "${fq_renamed}"
 fi; } \
 1> "${snakemake_log[0]}" 2>&1
