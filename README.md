@@ -36,9 +36,30 @@ data/
 
 </details>
 
+## Prerequisites
+
+- [**Python**](https://www.python.org)
+- [**Snakemake**](https://snakemake.github.io)
+- [**eido**](https://pep.databio.org/eido/)
+- [**Mamba**](https://mamba.readthedocs.io/en/latest/) (recommended) or [**conda**](https://docs.conda.io/projects/conda/en/stable/)
+
+Additional dependencies are automatically installed by **Mamba** or **conda**. Environments are defined in yaml files under `workflow/envs/`.
+
+- [**sra-tools**](https://github.com/ncbi/sra-tools)
+- [**FastQC**](https://www.bioinformatics.babraham.ac.uk/projects/fastqc/)
+- [**MultiQC**](https://multiqc.info/)
+
 ## Setup
 
 ```shell
+# ---------------------------------------------------------------------------- #
+# Install Mamba if necessary                                                   #
+# ---------------------------------------------------------------------------- #
+if ! command -v mamba &> /dev/null; then
+    "${SHELL}" <(curl -L micro.mamba.pm/install.sh)
+    source ~/.bashrc
+fi
+
 # Install Snakemake and eido using pipx (https://pipx.pypa.io/stable/)
 pipx install snakemake
 pipx inject snakemake eido
