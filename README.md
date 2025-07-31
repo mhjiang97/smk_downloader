@@ -18,16 +18,18 @@ A Snakemake workflow for downloading public raw sequencing data
 data/
 ├── sra/
 │   └── PRJNA*/            # Data organized by BioProject
-│       ├── SRR*/          # Individual SRA entries
-│       │   ├── SRR*.sra           # Raw SRA files
-│       │   ├── SRR*.fastq.gz      # Single-end reads
-|       │   ├── SRR*_1.fastq.gz    # Paired-end forward reads
-│       │   └── SRR*_2.fastq.gz    # Paired-end reverse reads
-│       ├── SRR*.fq.gz             # Symbolic links (single-end)
-|       ├── SRR*_R1.fq.gz          # Symbolic links (paired-end forward)
-│       ├── SRR*_R2.fq.gz          # Symbolic links (paired-end reverse)
-│       ├── fastqc/                # QC reports
-│       └── multiqc/               # Aggregated QC reports
+│       ├── fastqc/            # QC reports
+│       ├── multiqc/           # Aggregated QC reports
+│       ├── SRRxxx/
+│       │   ├── SRRxxx.sra
+│       │   └── SRRxxx.fastq.gz    # Single-end reads
+│       ├── SRRxxx/            # Individual SRA entries
+│       │   ├── SRRxxx.sra         # Raw SRA files
+│       │   ├── SRRxxx_1.fastq.gz  # Paired-end forward reads
+│       │   └── SRRxxx_2.fastq.gz  # Paired-end reverse reads
+│       ├── SRRxxx.fq.gz        # Symbolic links (single-end)
+│       ├── SRRxxx_R1.fq.gz     # Symbolic links (paired-end forward)
+│       └── SRRxxx_R2.fq.gz     # Symbolic links (paired-end reverse)
 └── code/
     └── smk_downloader/    # This workflow
 ```
@@ -136,6 +138,34 @@ snakemake --conda-create-envs-only
 # Run the workflow
 snakemake
 ```
+
+## Output
+
+All downloaded data is organized in the directory specified as *dir_run* in your configuration (or in the `workflow/` if *dir_run* is unset).
+
+<details>
+
+<summary>Main results</summary>
+
+- **fastqc/**
+  - Raw reads: `{sample}/{sample}[_1/_2]_fastqc.html`
+  - Trimmed reads: `fastp/{sample}/{sample}[_1/_2]_fastqc.html`
+
+- **multiqc/**
+  - Summary: `multiqc_report.html`
+
+- **SRRxxx/**
+  - Raw SRA archive files: `SRRxxx.sra`
+  - Extracted single-end reads: `SRRxxx.fastq.gz` *or*
+  - Extracted paired-end reads: `SRRxxx_1.fastq.gz`, `SRRxxx_2.fastq.gz`
+
+- **SRRxxx.fq.gz**
+  - Symbolic links to single-end reads
+
+- **SRRxxx_R1.fq.gz**, **SRRxxx_R2.fq.gz**
+  - Symbolic links to paired-end reads
+
+</details>
 
 ## License
 
