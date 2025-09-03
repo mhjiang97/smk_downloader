@@ -3,7 +3,7 @@ rule prefetch:
         "../../envs/sra-tools.yaml"
     retries: config["retries_prefetch"]
     output:
-        sra=update("{sample}/{sample}.sra"),
+        sra=ensure(update("{sample}/{sample}.sra"), non_empty=True),
     resources:
         n_prefetch=1,
     log:
