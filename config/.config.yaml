@@ -1,6 +1,6 @@
 dir_run: /projects/data/sra/PRJNAxxx
 
-retries_sra: 1
+retries_prefetch: 1
 
 suffixes_fastq_renamed:
   paired-end:
