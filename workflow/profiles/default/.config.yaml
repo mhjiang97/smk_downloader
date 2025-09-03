@@ -11,6 +11,8 @@ set-threads:
   fastqc: 4
   fasterq_dump_paired_end: 10
   fasterq_dump_single_end: 10
+  pigz_paired_end: 10
+  pigz_single_end: 10
 set-resources:
   prefetch:
     n_prefetch: 1
