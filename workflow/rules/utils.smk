@@ -8,6 +8,7 @@ def get_targets():
 
     if TO_RUN_FASTQC:
         targets += [f"fastqc/{sample}" for sample in SAMPLES]
+
         if TO_RUN_MULTIQC:
             targets += ["multiqc/multiqc_report.html"]
 
