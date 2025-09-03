@@ -6,5 +6,7 @@ rule all:
         get_targets(),
 
 
-include: "rules/sra/sra.smk"
+include: "rules/sra/prefetch.smk"
+include: "rules/sra/fasterq-dump.smk"
+include: "rules/sra/pigz.smk"
 include: "rules/qc/qc.smk"
