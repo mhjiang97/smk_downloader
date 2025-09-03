@@ -3,7 +3,6 @@
 
 set -x
 
-
 { dir=${snakemake_output[dir]}
 layout=${snakemake_params[layout]}
 threads=${snakemake[threads]}
