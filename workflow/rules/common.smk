@@ -16,7 +16,13 @@ validate(config, "../schemas/config.schema.yaml")
 pepfile: "config/pep/config.yaml"
 
 
-pepschema: "../schemas/pep.schema.yaml"
+if config["source_download"] == "sra":
+
+    pepschema: "../schemas/pep.schema.yaml"
+
+elif config["source_download"] == "gdc":
+
+    pepschema: "../schemas/pep.gdc.schema.yaml"
 
 
 if config["dir_run"] and config["dir_run"] is not None:
@@ -27,22 +33,27 @@ if config["dir_run"] and config["dir_run"] is not None:
 # *--------------------------------------------------------------------------* #
 # * Constants                                                                * #
 # *--------------------------------------------------------------------------* #
-SUFFIXES = config["suffixes_fastq_renamed"]
-SUFFIXES_READ_PE = SUFFIXES["paired-end"]
-SUFFIX_READ_1, SUFFIX_READ_2 = SUFFIXES_READ_PE
-SUFFIX_READ_SE = SUFFIXES["single-end"]
+if config["source_download"] == "sra":
+    SUFFIXES = config["suffixes_fastq_renamed"]
+    SUFFIXES_READ_PE = SUFFIXES["paired-end"]
+    SUFFIX_READ_1, SUFFIX_READ_2 = SUFFIXES_READ_PE
+    SUFFIX_READ_SE = SUFFIXES["single-end"]
 
-DF_SAMPLE = pep.sample_table
-SAMPLES = DF_SAMPLE["sample_name"]
-SAMPLES_PE = SAMPLES[DF_SAMPLE["library_layout"] == "paired-end"]
-SAMPLES_SE = SAMPLES[DF_SAMPLE["library_layout"] == "single-end"]
+    DF_SAMPLE = pep.sample_table
+    SAMPLES = DF_SAMPLE["sample_name"]
 
-SUFFIXES_SRA_PE = ["_1.fastq", "_2.fastq"]
-SUFFIXES_SRA_1, SUFFIXES_SRA_2 = SUFFIXES_SRA_PE
-SUFFIX_SRA_SE = ".fastq"
+    SAMPLES_PE = SAMPLES[DF_SAMPLE["library_layout"] == "paired-end"]
+    SAMPLES_SE = SAMPLES[DF_SAMPLE["library_layout"] == "single-end"]
 
-TO_RUN_FASTQC = config["run_fastqc"]
-TO_RUN_MULTIQC = config["run_multiqc"]
+    SUFFIXES_SRA_PE = ["_1.fastq", "_2.fastq"]
+    SUFFIXES_SRA_1, SUFFIXES_SRA_2 = SUFFIXES_SRA_PE
+    SUFFIX_SRA_SE = ".fastq"
+
+    TO_RUN_FASTQC = config["run_fastqc"]
+    TO_RUN_MULTIQC = config["run_multiqc"]
+elif config["source_download"] == "gdc":
+    DF_SAMPLE = pep.sample_table
+    SAMPLES = DF_SAMPLE["sample_name"]
 
 
 # *--------------------------------------------------------------------------* #

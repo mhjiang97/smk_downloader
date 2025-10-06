@@ -3,7 +3,24 @@ type: object
 properties:
   dir_run:
     type: string
+  source_download:
+    type: string
+    enum:
+      - sra
+      - gdc
+    default: sra
+  token_gdc:
+    type: string
+  method_gdc:
+    type: string
+    enum:
+      - get
+      - post
+    default: post
   retries_prefetch:
+    type: integer
+    default: 1
+  retries_gdc:
     type: integer
     default: 1
   suffixes_fastq_renamed:

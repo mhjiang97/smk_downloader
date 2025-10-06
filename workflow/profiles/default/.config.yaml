@@ -1,12 +1,17 @@
 software-deployment-method:
   - conda
 conda-prefix: /.snakemake/envs/smk_downloader
+scheduler: greedy
 printshellcmds: True
 keep-incomplete: True
-prioritize: ["pigz_paired_end", "pigz_single_end"]
+prioritize:
+  - pigz_paired_end
+  - pigz_single_end
+  # - gdc_slicing_post
 cores: 20
 resources:
   n_prefetch: 5
+  n_curl: 5
 set-threads:
   fastqc: 4
   fasterq_dump_paired_end: 10
@@ -16,3 +21,7 @@ set-threads:
 set-resources:
   prefetch:
     n_prefetch: 1
+  gdc_slicing_post:
+    n_curl: 1
+  gdc_slicing_get:
+    n_curl: 1

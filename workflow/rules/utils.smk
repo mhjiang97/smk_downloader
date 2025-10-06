@@ -1,16 +1,20 @@
 def get_targets():
     targets = []
 
-    targets += [
-        f"{sample}{suffix}" for sample in SAMPLES_PE for suffix in SUFFIXES_READ_PE
-    ]
-    targets += [f"{sample}/{sample}{SUFFIX_READ_SE}" for sample in SAMPLES_SE]
+    if config["source_download"] == "sra":
+        targets += [
+            f"{sample}{suffix}" for sample in SAMPLES_PE for suffix in SUFFIXES_READ_PE
+        ]
+        targets += [f"{sample}/{sample}{SUFFIX_READ_SE}" for sample in SAMPLES_SE]
 
-    if TO_RUN_FASTQC:
-        targets += [f"fastqc/{sample}" for sample in SAMPLES]
+        if TO_RUN_FASTQC:
+            targets += [f"fastqc/{sample}" for sample in SAMPLES]
 
-        if TO_RUN_MULTIQC:
-            targets += ["multiqc/multiqc_report.html"]
+            if TO_RUN_MULTIQC:
+                targets += ["multiqc/multiqc_report.html"]
+
+    if config["source_download"] == "gdc":
+        targets += [f"gdc_slicing/{sample}/{sample}.bam" for sample in SAMPLES]
 
     return targets
 

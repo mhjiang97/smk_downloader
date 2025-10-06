@@ -1,0 +1,18 @@
+description: The schema for smk_downloader.
+imports:
+  - http://schema.databio.org/pep/2.0.0.yaml
+properties:
+  samples:
+    type: array
+    items:
+      type: object
+      properties:
+        uuid:
+          type: string
+          description: UUID of the BAM file to download
+        region_bed:
+          type: string
+          description: Regions to slice
+      required:
+        - uuid
+        - region_bed

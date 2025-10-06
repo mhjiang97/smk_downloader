@@ -1,6 +1,12 @@
 dir_run: /projects/data/sra/PRJNAxxx
 
+source_download: sra
+
+token_gdc: /projects/data/doc/gdc/token
+method_gdc: post
+
 retries_prefetch: 1
+retries_gdc: 1
 
 suffixes_fastq_renamed:
   paired-end:

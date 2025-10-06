@@ -6,7 +6,13 @@ rule all:
         get_targets(),
 
 
-include: "rules/sra/prefetch.smk"
-include: "rules/sra/fasterq-dump.smk"
-include: "rules/sra/pigz.smk"
-include: "rules/qc/qc.smk"
+if config["source_download"] == "sra":
+
+    include: "rules/sra/prefetch.smk"
+    include: "rules/sra/fasterq-dump.smk"
+    include: "rules/sra/pigz.smk"
+    include: "rules/qc/qc.smk"
+
+elif config["source_download"] == "gdc":
+
+    include: f"rules/gdc/slicing-{config['method_gdc']}.smk"
