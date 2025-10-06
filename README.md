@@ -9,17 +9,27 @@ A Snakemake workflow for downloading public raw sequencing data
 ## Supported Data Sources
 
 - [**SRA**](https://www.ncbi.nlm.nih.gov/sra)
+- [**GDC**](https://docs.gdc.cancer.gov/API/Users_Guide/BAM_Slicing/)
 
 <details>
 
 <summary><h2>Recommended Project Structure</h2></summary>
 
 ```text
-data/
-├── code/
-│   └── smk_downloader/    # This workflow
-└── sra/
-    └── PRJNA*/            # Outputs of this workflow
+projects/
+├── data/
+│   ├── code/
+│   │   └── smk_downloader/     # This workflow
+│   └── sra/
+│       └── PRJNA*/             # SRA download outputs
+│           ├── fastq/          # Raw FASTQ files
+│           ├── fastqc/         # Quality control reports
+│           └── multiqc/        # Aggregated QC reports
+└── tcga/
+    └── analysis/
+        └── [wgs/wes/rnaseq]/
+            └── [brca/...]/
+                └── gdc_slicing/    # GDC BAM slicing outputs
 ```
 
 </details>
@@ -36,6 +46,8 @@ Additional dependencies are automatically installed by **Mamba** or **conda**. E
 - [**sra-tools**](https://github.com/ncbi/sra-tools)
 - [**FastQC**](https://www.bioinformatics.babraham.ac.uk/projects/fastqc/)
 - [**MultiQC**](https://multiqc.info/)
+- [**jq**](https://jqlang.org)
+- [**curl**](https://curl.se)
 
 ## Setup
 
@@ -73,7 +85,13 @@ cp workflow/profiles/default/.config.yaml workflow/profiles/default/config.yaml
 ```yaml
 dir_run: /projects/data/sra/PRJNAxxx    # Path to the directory where data will be downloaded (Optional)
 
-retries_sra: 1                          # How many times to retry downloading SRA data (Default: 1)
+source_download: sra                    # Data source to download from (`sra` or `gdc`) (Default: `sra`)
+
+token_gdc: /projects/data/doc/gdc/token # Path to the GDC token file (Required if `source_download` is `gdc`)
+method_gdc: post                        # HTTP method for GDC BAM slicing (`get` or `post`) (Default: `post`)
+
+retries_prefetch: 1                     # How many times to retry downloading SRA data (Default: 1)
+retries_gdc: 1                          # How many times to retry downloading GDC data (Default: 1)
 
 suffixes_fastq_renamed:                 # Suffixes for renamed FASTQ files (Defaults: {paired-end: ["_R1.fq.gz", "_R2.fq.gz"], single-end: ".fq.gz"})
   paired-end:
@@ -99,18 +117,29 @@ All default values are defined in the validation schema (`workflow/schemas/confi
 software-deployment-method:
   - conda
 conda-prefix: /.snakemake/envs/smk_downloader
+scheduler: greedy
 printshellcmds: True
 keep-incomplete: True
+prioritize:
+  - pigz_paired_end
+  - pigz_single_end
 cores: 20
 resources:
-  n_instance: 5
+  n_prefetch: 5
+  n_curl: 5
 set-threads:
   fastqc: 4
+  fasterq_dump_paired_end: 10
+  fasterq_dump_single_end: 10
+  pigz_paired_end: 10
+  pigz_single_end: 10
 set-resources:
-  download_sra_paired_end:
-    n_instance: 1
-  download_sra_single_end:
-    n_instance: 1
+  prefetch:
+    n_prefetch: 1
+  gdc_slicing_post:
+    n_curl: 1
+  gdc_slicing_get:
+    n_curl: 1
 ```
 
 </details>
@@ -130,13 +159,23 @@ sample_table: PRJNAxxx.csv    # Path to the sample table (Required)
 
 </details>
 
-The sample table must include these mandatory columns:
+#### SRA
+
+If downloading from **SRA**, the sample table must include these mandatory columns:
 
 | **sample_name**                   | **library_layout**                                     |
 | --------------------------------- | ------------------------------------------------------ |
 | Unique identifier for each sample | Sequencing strategy (`"paired-end"` or `"single-end"`) |
 
-Another validation schema (`workflow/schemas/pep.schema.yaml`) ensures that the sample table meets the required format.
+#### GDC
+
+If downloading from **GDC**, the sample table must include these mandatory columns:
+
+| **sample_name**                   | **uuid**                         | **region_bed**   |
+| --------------------------------- | -------------------------------- | ---------------- |
+| Unique identifier for each sample | UUID of the BAM file to download | Regions to slice |
+
+Validation schema (`workflow/schemas/pep.schema.yaml` and `workflow/schemas/pep.gdc.schema.yaml`) ensures that the sample table meets the required format.
 
 ## Execution
 
@@ -166,11 +205,11 @@ All downloaded data is organized in the directory specified as *dir_run* in your
 - **{sample}/**
   - Raw SRA archive files: `{sample}.sra`
 
-- **{sample}.fastq.gz** *or* **{sample}_1.fastq.gz**, **{sample}_2.fastq.gz**
-  - Extracted single-end reads *or* paired-end reads
-
 - **{sample}.fq.gz** *or* **{sample}_R1.fq.gz**, **{sample}_R2.fq.gz**
-  - Symbolic links to single-end reads *or* paired-end reads
+  - Extracted, pigzipped, and renamed single-end reads *or* paired-end reads
+
+- **gdc_slicing/**
+  - Sliced BAM files: `{sample}/{sample}.bam`
 
 </details>
 
