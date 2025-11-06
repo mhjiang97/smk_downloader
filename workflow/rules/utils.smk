@@ -3,7 +3,9 @@ def get_targets():
 
     if config["source_download"] == "sra":
         targets += [
-            f"{sample}{suffix}" for sample in SAMPLES_PE for suffix in SUFFIXES_READ_PE
+            f"{sample}{suffix}"
+            for sample in SAMPLES_PE
+            for suffix in SUFFIXES_READ_PE
         ]
         targets += [f"{sample}/{sample}{SUFFIX_READ_SE}" for sample in SAMPLES_SE]
 
@@ -24,7 +26,9 @@ def get_library_layout(wildcards):
     layout = DF_SAMPLE["library_layout"][sample]
 
     if layout not in ["paired-end", "single-end"]:
-        raise ValueError(f"Unexpected library layout '{layout}' for sample '{sample}'.")
+        raise ValueError(
+            f"Unexpected library layout '{layout}' for sample '{sample}'."
+        )
 
     return layout
 
