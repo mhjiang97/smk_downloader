@@ -5,7 +5,7 @@ def get_targets():
         targets += [
             f"{sample}{suffix}" for sample in SAMPLES_PE for suffix in SUFFIXES_READ_PE
         ]
-        targets += [f"{sample}/{sample}{SUFFIX_READ_SE}" for sample in SAMPLES_SE]
+        targets += [f"{sample}{SUFFIX_READ_SE}" for sample in SAMPLES_SE]
 
         if TO_RUN_FASTQC:
             targets += [f"fastqc/{sample}" for sample in SAMPLES]
