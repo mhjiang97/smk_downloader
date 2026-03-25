@@ -1,19 +1,19 @@
 rule gdc_slicing_get:
-    conda:
-        "../../envs/jq.yaml"
-    retries: config["retries_gdc"]
     input:
         bed=lambda wildcards: DF_SAMPLE["region_bed"][wildcards.sample],
         token=config["token_gdc"],
     output:
         bam=protected("gdc_slicing/{sample}/{sample}.bam"),
+    log:
+        "logs/{sample}/gdc_slicing_get.log",
+    retries: config["retries_gdc"]
+    conda:
+        "../../envs/jq.yaml"
+    resources:
+        n_curl=1,
     params:
         api="https://api.gdc.cancer.gov/slicing/view",
         uuid=lambda wildcards: DF_SAMPLE["uuid"][wildcards.sample],
-    resources:
-        n_curl=1,
-    log:
-        "logs/{sample}/gdc_slicing_get.log",
     shell:
         """
         {{ token=$(<{input.token})

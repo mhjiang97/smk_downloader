@@ -1,13 +1,13 @@
 rule prefetch:
-    conda:
-        "../../envs/sra-tools.yaml"
-    retries: config["retries_prefetch"]
     output:
         sra=ensure(update("{sample}/{sample}.sra"), non_empty=True),
-    resources:
-        n_prefetch=1,
     log:
         "logs/{sample}/prefetch.log",
+    retries: config["retries_prefetch"]
+    conda:
+        "../../envs/sra-tools.yaml"
+    resources:
+        n_prefetch=1,
     shell:
         """
         prefetch \\
