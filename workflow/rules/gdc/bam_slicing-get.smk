@@ -1,11 +1,11 @@
-rule gdc_slicing_get:
+rule bam_slicing_get:
     input:
         bed=lambda wildcards: DF_SAMPLE["region_bed"][wildcards.sample],
         token=config["token_gdc"],
     output:
-        bam=protected("gdc_slicing/{sample}/{sample}.bam"),
+        bam=protected("bam_slicing/{sample}/{sample}.bam"),
     log:
-        "logs/{sample}/gdc_slicing_get.log",
+        "logs/{sample}/bam_slicing_get.log",
     retries: config["retries_gdc"]
     conda:
         "../../envs/jq.yaml"

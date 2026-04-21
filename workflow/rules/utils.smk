@@ -14,7 +14,7 @@ def get_targets():
                 targets += ["multiqc/multiqc_report.html"]
 
     if config["source_download"] == "gdc":
-        targets += [f"gdc_slicing/{sample}/{sample}.bam" for sample in SAMPLES]
+        targets += [f"bam_slicing/{sample}/{sample}.bam" for sample in SAMPLES]
 
     return targets
 

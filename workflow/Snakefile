@@ -15,4 +15,4 @@ if config["source_download"] == "sra":
 
 elif config["source_download"] == "gdc":
 
-    include: f"rules/gdc/slicing-{config['method_gdc']}.smk"
+    include: f"rules/gdc/bam_slicing-{config['method_gdc']}.smk"

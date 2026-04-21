@@ -1,12 +1,12 @@
-rule gdc_slicing_post:
+rule bam_slicing_post:
     input:
         bed=lambda wildcards: DF_SAMPLE["region_bed"][wildcards.sample],
         token=config["token_gdc"],
     output:
-        json="gdc_slicing/{sample}/regions.json",
-        bam=protected("gdc_slicing/{sample}/{sample}.bam"),
+        json="bam_slicing/{sample}/regions.json",
+        bam=protected("bam_slicing/{sample}/{sample}.bam"),
     log:
-        "logs/{sample}/gdc_slicing_post.log",
+        "logs/{sample}/bam_slicing_post.log",
     retries: config["retries_gdc"]
     conda:
         "../../envs/jq.yaml"
