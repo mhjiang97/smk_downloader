@@ -9,8 +9,6 @@ properties:
       - sra
       - gdc
     default: sra
-  token_gdc:
-    type: string
   method_gdc:
     type: string
     enum:

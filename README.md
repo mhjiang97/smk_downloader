@@ -29,7 +29,7 @@ projects/
     └── analysis/
         └── [wgs/wes/rnaseq]/
             └── [brca/...]/
-                └── gdc_slicing/    # GDC BAM slicing outputs
+                └── bam_slicing/    # GDC BAM slicing outputs
 ```
 
 </details>
@@ -87,7 +87,6 @@ dir_run: /projects/data/sra/PRJNAxxx    # Path to the directory where data will 
 
 source_download: sra                    # Data source to download from (`sra` or `gdc`) (Default: `sra`)
 
-token_gdc: /projects/data/doc/gdc/token # Path to the GDC token file (Required if `source_download` is `gdc`)
 method_gdc: post                        # HTTP method for GDC BAM slicing (`get` or `post`) (Default: `post`)
 
 retries_prefetch: 1                     # How many times to retry downloading SRA data (Default: 1)
@@ -183,6 +182,9 @@ Validation schema (`workflow/schemas/pep.schema.yaml` and `workflow/schemas/pep.
 # Create environments
 snakemake --conda-create-envs-only
 
+# If using GDC BAM slicing, set the environment variable for the GDC token (replace with the actual path to your token file)
+export GDC_TOKEN=$(< /path/to/gdc_token)
+
 # Run the workflow
 snakemake
 ```
@@ -208,7 +210,7 @@ All downloaded data is organized in the directory specified as *dir_run* in your
 - **{sample}.fq.gz** *or* **{sample}_R1.fq.gz**, **{sample}_R2.fq.gz**
   - Extracted, pigzipped, and renamed single-end reads *or* paired-end reads
 
-- **gdc_slicing/**
+- **bam_slicing/**
   - Sliced BAM files: `{sample}/{sample}.bam`
 
 </details>

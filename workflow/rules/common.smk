@@ -24,6 +24,9 @@ elif config["source_download"] == "gdc":
 
     pepschema: "../schemas/pep.gdc.schema.yaml"
 
+    envvars:
+        "GDC_TOKEN",
+
 
 if config["dir_run"] and config["dir_run"] is not None:
 
